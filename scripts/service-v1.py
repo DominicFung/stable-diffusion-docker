@@ -28,6 +28,7 @@ def stable_diffusion(
     skip,
     do_slice,
     token,
+    s3bucket,
 ):
     model_name = "CompVis/stable-diffusion-v1-4"
     device = "cuda"
@@ -68,7 +69,7 @@ def stable_diffusion(
 
             print(image_location)
             client = boto3.client("s3")
-            client.upload_file(image_location, BUCKET_NAME, image_location)
+            client.upload_file(image_location, s3bucket, image_location)
 
     print("completed pipeline:", iso_date_time(), flush=True)
 
@@ -145,6 +146,14 @@ def main():
     parser.add_argument(
         "--token", type=str, nargs="?", help="Huggingface user access token"
     )
+    parser.add_argument(
+      "--s3bucket",
+      type=str,
+      nargs="?",
+      const=True,
+      default=BUCKET_NAME,
+      help="S3 Bucket Name in us-east-1 to store the output"
+    )
 
     args = parser.parse_args()
 
@@ -171,6 +180,7 @@ def main():
         args.skip,
         args.attention_slicing,
         args.token,
+        args.s3
     )
 
 if __name__ == "__main__":
