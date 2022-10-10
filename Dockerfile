@@ -1,6 +1,6 @@
 FROM tensorflow/tensorflow:2.10.0-gpu
 
-RUN pip install diffusers pillow torch transformers \
+RUN pip install diffusers pillow torch transformers boto3 \
   --extra-index-url https://download.pytorch.org/whl/cu116
 
 RUN useradd -m huggingface
@@ -12,7 +12,8 @@ WORKDIR /home/huggingface
 RUN mkdir -p /home/huggingface/.cache/huggingface \
   && mkdir -p /home/huggingface/output
 
-COPY docker-entrypoint.py /usr/local/bin
+# COPY docker-entrypoint.py /usr/local/bin
+COPY script/service-v1.py /usr/local/bin
 COPY token.txt /home/huggingface
 
-ENTRYPOINT [ "sd-service.py" ]
+ENTRYPOINT [ "script/service-v1.py" ]
