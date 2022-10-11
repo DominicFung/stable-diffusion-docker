@@ -22,8 +22,10 @@ dev() {
 
 run() {
     shift
+    echo "$CWD"
+    echo "$@"
     mkdir -p output
-    docker run --rm --gpus=all \
+    docker run --rm \
         -v huggingface:/home/huggingface/.cache/huggingface \
         -v "$PWD"/output:/home/huggingface/output \
         "$CWD" "$@"

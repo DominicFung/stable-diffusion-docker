@@ -180,7 +180,7 @@ def main():
         args.skip,
         args.attention_slicing,
         args.token,
-        args.s3
+        args.s3bucket
     )
 
 if __name__ == "__main__":

@@ -12,8 +12,12 @@ WORKDIR /home/huggingface
 RUN mkdir -p /home/huggingface/.cache/huggingface \
   && mkdir -p /home/huggingface/output
 
-# COPY docker-entrypoint.py /usr/local/bin
-COPY script/service-v1.py /usr/local/bin
+COPY service-v1.py /usr/local/bin
 COPY token.txt /home/huggingface
 
-ENTRYPOINT [ "script/service-v1.py" ]
+USER root
+RUN chmod +x /usr/local/bin/service-v1.py
+
+USER huggingface
+
+ENTRYPOINT [ "service-v1.py" ]
